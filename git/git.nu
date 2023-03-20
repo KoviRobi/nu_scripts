@@ -44,7 +44,7 @@ export def _git_log [v num] {
         | each {|x| ($x| upsert date ($x.date | into datetime))}
     }
     if $v {
-        $r | merge { $stat } | reverse
+        $r | merge {|| $stat } | reverse
     } else {
         $r | reverse
     }
