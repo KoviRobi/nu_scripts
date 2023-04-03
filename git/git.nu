@@ -37,12 +37,12 @@ export def _git_log [v num] {
     let stat = if $v {
         _git_stat $num
     } else { {} }
-    let r = do -i {
+    let r = (do -i {
         git log -n $num --pretty=%h»¦«%s»¦«%aN»¦«%aE»¦«%aD
         | lines
         | split column "»¦«" sha message author email date
         | each {|x| ($x| upsert date ($x.date | into datetime))}
-    }
+    })
     if $v {
         $r | merge {|| $stat } | reverse
     } else {
